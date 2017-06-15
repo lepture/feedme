@@ -1,67 +1,36 @@
 import requests
-from html.parser import HTMLParser
+from bs4 import BeautifulSoup
 from .util import Entry, Feed
 
 HEADERS = {'User-Agent': 'Mozilla/5.0 (compatible; Feedme)'}
 
 
-class JianshuParser(HTMLParser):
-    def __init__(self, *args, **kwargs):
-        super(JianshuParser, self).__init__(*args, **kwargs)
-        self._process = None
-        self._name = None
-        self._items = []
-        self._item = {}
-
-    def handle_starttag(self, tag, attrs):
-        params = dict(attrs)
-
-        if tag == 'a' and params.get('class') == 'name':
-            self._process = 'name'
-            return
-
-        if tag == 'a' and params.get('class') == 'blue-link':
-            self._process = 'author'
-        elif tag == 'span' and params.get('class') == 'time':
-            self._process = None
-            self._item['published'] = params.get('data-shared-at')
-        elif tag == 'a' and params.get('class') == 'title':
-            self._process = 'title'
-            self._item['url'] = 'http://www.jianshu.com' + params.get('href')
-        elif tag == 'p' and params.get('class') == 'abstract':
-            self._process = 'content'
-        else:
-            self._process = None
-
-    def handle_data(self, data):
-        if self._process is not None:
-            text = data.strip()
-            if text:
-                if self._process == 'name':
-                    self._name = text
-                    self._process = None
-                else:
-                    self._item[self._process] = text
-
-    def handle_endtag(self, tag):
-        if self._process == 'content':
-            self._items.append(self._item)
-            self._item = {}
-
-
 def parse_jianshu_html(url):
     resp = requests.get(url, headers=HEADERS)
-    p = JianshuParser()
-    p.feed(resp.text)
-    if not p._items:
+    soup = BeautifulSoup(resp.text, 'html.parser')
+    titles = soup.select('div.title a.name')
+    if not titles:
         return None
+    title = titles[0].get_text()
 
     items = []
-    for item in p._items:
-        item['updated'] = item['published']
+    for el in soup.select('ul.note-list li'):
+        item = {}
+        author = el.find('a', class_='blue-link')
+        if author:
+            item['author'] = author.get_text().strip()
+        updated = el.find('span', class_='time')
+        if updated:
+            item['updated'] = updated.get('data-shared-at')
+            item['published'] = item['updated']
+        el_title = el.find('a', class_='title')
+        if el_title:
+            item['title'] = el_title.get_text().strip()
+            item['url'] = 'http://www.jianshu.com' + el_title.get('href')
+        content = el.find('p', class_='abstract')
+        if content:
+            item['content'] = content.get_text().strip()
         items.append(Entry(**item))
-
-    title = p._name
     return Feed(title=title, url=url, items=items)
 
 

@@ -39,3 +39,9 @@
 1. `http://feeds.doocer.com/jianshu/u/{id}`
 2. `http://feeds.doocer.com/jianshu/c/{id}`
 3. `http://feeds.doocer.com/jianshu/nb/{id}`
+
+## 一个
+
+1. `http://feeds.doocer.com/one/article`
+2. `http://feeds.doocer.com/one/movie`
+3. `http://feeds.doocer.com/one/music`
