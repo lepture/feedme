@@ -16,7 +16,7 @@ def parse_jianshu_html(url):
     items = []
     for el in soup.select('ul.note-list li'):
         item = {}
-        author = el.find('a', class_='blue-link')
+        author = el.find('a', class_='nickname')
         if author:
             item['author'] = author.get_text().strip()
         updated = el.find('span', class_='time')
