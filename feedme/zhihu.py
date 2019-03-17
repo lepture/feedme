@@ -1,4 +1,4 @@
-import re
+import datetime
 import requests
 from .util import Entry, Feed
 
@@ -9,31 +9,30 @@ HEADERS = {'User-Agent': 'Mozilla/5.0 (compatible; Feedme)'}
 def parse_zhihu_zhuanlan(slug):
     column_url = BASE + '/api/columns/' + slug
 
-    posts_url = column_url + '/posts'
+    posts_url = column_url + '/articles'
     resp = requests.get(posts_url, headers=HEADERS)
     if resp.status_code != 200:
         return None
 
     items = []
-    for item in resp.json():
+    for item in resp.json()['data']:
         title = item.get('title')
         url = item.get('url')
-        content = item.get('content')
-        published = item.get('publishedTime')
-        if title and url and content and published:
+        content = item.get('excerpt')
+        if title and url and content:
             author = item.get('author', {})
             items.append(Entry(
                 title=title,
                 url=BASE + url,
-                updated=published,
-                published=published,
-                content=format_content(content),
+                updated=format_time(item.get('updated')),
+                published=format_time(item.get('created')),
+                content=content,
                 author=author.get('name', '')
             ))
 
     resp = requests.get(column_url, headers=HEADERS)
     data = resp.json()
-    title = data.get('name')
+    title = data.get('title')
     url = data.get('url')
     return Feed(title=title, url=BASE + url, items=items)
 
@@ -82,9 +81,6 @@ def parse_zhihu_news(channel_id):
     return Feed(title=title, url=url, items=items)
 
 
-def format_content(content):
-    return re.sub(
-        r'src="(\S+?)\.jpg"',
-        r'src="https://pic2.zhimg.com/\1.jpg"',
-        content,
-    )
+def format_time(t):
+    d = datetime.datetime.fromtimestamp(t)
+    return d.strftime('%Y-%m-%dT%H:%M:%SZ')
