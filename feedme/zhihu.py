@@ -23,7 +23,7 @@ def parse_zhihu_zhuanlan(slug):
             author = item.get('author', {})
             items.append(Entry(
                 title=title,
-                url=BASE + url,
+                url=url,
                 updated=format_time(item.get('updated')),
                 published=format_time(item.get('created')),
                 content=content,
@@ -34,7 +34,7 @@ def parse_zhihu_zhuanlan(slug):
     data = resp.json()
     title = data.get('title')
     url = data.get('url')
-    return Feed(title=title, url=BASE + url, items=items)
+    return Feed(title=title, url=url, items=items)
 
 
 def parse_zhihu_news(channel_id):
