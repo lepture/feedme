@@ -6,42 +6,42 @@
 
 ## 知乎专栏
 
-`http://feeds.doocer.com/zhihu/c/{name}`
+`https://feeds.doocer.com/zhihu/c/{name}`
 
 例如：
 
 + <https://zhuanlan.zhihu.com/maboyong>
-+ <http://feeds.doocer.com/zhihu/c/maboyong>
++ <https://feeds.doocer.com/zhihu/c/maboyong>
 
 ## 读读日报
 
-`http://feeds.doocer.com/zhihu/n/{id}`
+`https://feeds.doocer.com/zhihu/n/{id}`
 
-例如：<http://feeds.doocer.com/zhihu/n/35>
+例如：<https://feeds.doocer.com/zhihu/n/35>
 
 ## 腾讯大家
 
-1. `http://feeds.doocer.com/dajia/u/{id}`
-2. `http://feeds.doocer.com/dajia/c/{id}`
+1. `https://feeds.doocer.com/dajia/u/{id}`
+2. `https://feeds.doocer.com/dajia/c/{id}`
 
 作者页面：
 
 + <http://dajia.qq.com/author_personal.htm#!/587>
-+ <http://feeds.doocer.com/dajia/u/587>
++ <https://feeds.doocer.com/dajia/u/587>
 
 专栏页面：
 
 + <http://dajia.qq.com/tanzi_diceng.htm#!/301>
-+ <http://feeds.doocer.com/dajia/c/301>
++ <https://feeds.doocer.com/dajia/c/301>
 
 ## 简书
 
-1. `http://feeds.doocer.com/jianshu/u/{id}`
-2. `http://feeds.doocer.com/jianshu/c/{id}`
-3. `http://feeds.doocer.com/jianshu/nb/{id}`
+1. `https://feeds.doocer.com/jianshu/u/{id}`
+2. `https://feeds.doocer.com/jianshu/c/{id}`
+3. `https://feeds.doocer.com/jianshu/nb/{id}`
 
 ## 一个
 
-1. `http://feeds.doocer.com/one/article`
-2. `http://feeds.doocer.com/one/movie`
-3. `http://feeds.doocer.com/one/music`
+1. `https://feeds.doocer.com/one/article`
+2. `https://feeds.doocer.com/one/movie`
+3. `https://feeds.doocer.com/one/music`
